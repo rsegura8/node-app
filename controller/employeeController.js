@@ -41,7 +41,9 @@ export const update = async (req, res) => {
       return res.status(404).json({ message: "Employee not found" });
     }
 
-    const updateEmployee = await Employee.findByIdAndUpdate(id, req.body, {new: true,});
+    const updateEmployee = await Employee.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
     res.status(201).json(updateEmployee);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
@@ -63,3 +65,16 @@ export const update = async (req, res) => {
 //     res.status(500).json({ error: "Internal Server Error" });
 //   }
 // };
+
+export const findEmployee = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const employeeExist = await Employee.findOne({ _id: id });
+    if (!employeeExist) {
+      return res.status(404).json({ message: "Employee does not exist" });
+    }
+    res.status(200).json(employeeExist)
+  } catch (error) {
+    res.status(500).json({error: "Internal Server Error"})
+  }
+};
